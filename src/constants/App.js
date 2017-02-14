@@ -1,5 +1,6 @@
 export const TOKEN_NAME_LOCAL_STORAGE = 'token';
 export const AUTHENTICATED_NAME_LOCAL_STORAGE = 'loginName';
+export const STATUS_LOCAL_STORAGE = 'status';
 
 export const ERROR_VALID_INPUT = 'This field has to consist more than 4 symbols';
 export const ERROR_PASSWORD_CONFIRMED_PASSWORD = 'Password and confirmed password have to be equal';

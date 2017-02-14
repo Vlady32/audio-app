@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-
+import {Link} from 'react-router';
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -213,7 +213,9 @@ class Header extends Component{
               <MuiThemeProvider>
                 {this.props.auth.isAuthenticated ? (
                   <div className={signInClasses}>
-                    <RaisedButton label={this.props.auth.loginName} className="but" onTouchTap={this.handleOpenLoginDialog}/>
+                    <Link to={`/user/${this.props.auth.loginName}`}>
+                      <RaisedButton label={this.props.auth.loginName} className="but"/>
+                    </Link>
                     <RaisedButton label="Log Out"  className="but" onTouchTap={this.props.authActions.logOut}/>
                   </div>
                 ) : (

@@ -1,5 +1,5 @@
 import {SEND_AUTH_REQUEST, RECEIVE_AUTH_SUCCESS, RECEIVE_AUTH_FAIL, CLEAR_AUTH_ERROR_MSG, SEND_REG_REQUEST, RECEIVE_REG_SUCCESS, RECEIVE_REG_FAIL, CLEAR_LOGIN_REG_MESSAGES, SEND_LOGOUT_REQUEST} from '../constants/ActionTypes';
-import {TOKEN_NAME_LOCAL_STORAGE, AUTHENTICATED_NAME_LOCAL_STORAGE} from '../constants/App';
+import {TOKEN_NAME_LOCAL_STORAGE, AUTHENTICATED_NAME_LOCAL_STORAGE, STATUS_LOCAL_STORAGE} from '../constants/App';
 
 const initialState = {
   isAuthenticated: localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE) ? true : false,
@@ -7,6 +7,7 @@ const initialState = {
   isRegistered: false,
   token: localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE),
   loginName: localStorage.getItem(AUTHENTICATED_NAME_LOCAL_STORAGE) ? localStorage.getItem(AUTHENTICATED_NAME_LOCAL_STORAGE) : ' ',
+  status: localStorage.getItem(STATUS_LOCAL_STORAGE) ? localStorage.getItem(STATUS_LOCAL_STORAGE) : 'guest',
   fetchingAuth: false,
   fetchingReg: false,
   error_msg: '',
@@ -26,12 +27,14 @@ export default function auth(state = initialState, action){
     case RECEIVE_AUTH_SUCCESS: {
       localStorage.setItem(TOKEN_NAME_LOCAL_STORAGE, action.token);
       localStorage.setItem(AUTHENTICATED_NAME_LOCAL_STORAGE, action.loginName);
+      localStorage.setItem(STATUS_LOCAL_STORAGE, action.status);
       return{
         ...state,
         token: action.token,
         fetchingAuth: false,
         isAuthenticated: true,
         loginName: action.loginName,
+        status: action.status,
         isAuthenticatedDialog: true,
         error_msg: ''
       }
