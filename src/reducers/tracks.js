@@ -1,4 +1,4 @@
-import {RECEIVE_SONGS_SUCCESS, GET_SONGS_REQUEST, RECEIVE_SONGS_FAIL, SEND_LIKE_REQUEST, RECEIVE_LIKE_SUCCESS, RECEIVE_LIKE_FAIL, SEARCH_SONG, OPEN_DIALOG_TRACK, CLOSE_DIALOG_TRACK, GET_COMMENTS_REQUEST, RECEIVE_COMMENTS_SUCCESS, RECEIVE_COMMENTS_FAIL, SEND_COMMENT} from '../constants/ActionTypes';
+import {RECEIVE_SONGS_SUCCESS, GET_SONGS_REQUEST, RECEIVE_SONGS_FAIL, SEND_LIKE_REQUEST, RECEIVE_LIKE_SUCCESS, RECEIVE_LIKE_FAIL, SEARCH_SONG, OPEN_DIALOG_TRACK, CLOSE_DIALOG_TRACK, GET_COMMENTS_REQUEST, RECEIVE_COMMENTS_SUCCESS, RECEIVE_COMMENTS_FAIL, SEND_COMMENT, OPEN_UPLOAD_DIALOG_TRACK, CLOSE_UPLOAD_DIALOG_TRACK, UPLOAD_TRACK, RECEIVE_UPLOAD_TRACK_SUCCESS, RECEIVE_UPLOAD_TRACK_FAIL} from '../constants/ActionTypes';
 
 const initialState = {
   arraySongs : [],
@@ -9,7 +9,10 @@ const initialState = {
   fetchingComments: false,
   errorMsg: '',
   idDialogTrack: -1,
-  isOpenedDialogTrack: false
+  isOpenedDialogTrack: false,
+  isOpenedUploadDialogTrack: false,
+  uploadingTrack: false,
+  uploadedTrackMessage: ''
 }
 
 export default function tracks(state = initialState, action){
@@ -69,6 +72,20 @@ export default function tracks(state = initialState, action){
       }
     }
 
+    case OPEN_UPLOAD_DIALOG_TRACK: {
+      return{
+        ...state,
+        isOpenedUploadDialogTrack: true
+      }
+    }
+
+    case CLOSE_UPLOAD_DIALOG_TRACK: {
+      return{
+        ...state,
+        isOpenedUploadDialogTrack: false
+      }
+    }
+
     case GET_COMMENTS_REQUEST: {
       return{
         ...state,
@@ -96,6 +113,29 @@ export default function tracks(state = initialState, action){
       return{
         ...state,
         fetchingComments: true
+      }
+    }
+
+    case UPLOAD_TRACK: {
+      return{
+        ...state,
+        uploadingTrack: true
+      }
+    }
+
+    case RECEIVE_UPLOAD_TRACK_SUCCESS: {
+      return{
+        ...state,
+        uploadingTrack: false,
+        uploadedTrackMessage: action.msg
+      }
+    }
+
+    case RECEIVE_UPLOAD_TRACK_FAIL: {
+      return{
+        ...state,
+        uploadingTrack: false,
+        uploadedTrackMessage: action.msg
       }
     }
 

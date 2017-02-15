@@ -4,24 +4,67 @@
     text-transform: capitalize;
   }
 
-  .dropZone{
-    width: 250px;
-    height: 100px;
-    border: 1px dashed grey;
-    font-family: 'Roboto-Light';
+  .imgTrack{
+    float: left;
+    margin-top: 20px;
 
-    .dropZoneDescription{
-      margin-top: 25px;
-      padding: 5px;
+    .dropZone{
+      position: relative;
+      left: 20px;
+      width: 100px;
+      height: 100px;
+      border: 1px dashed grey;
+      font-family: 'Roboto-Light';
+      z-index: 1000;
+
+      .dropZoneDescription{
+        font-size: 15px;
+        text-align: center;
+        padding: 5px;
+        cursor: pointer;
+      }
+
     }
 
     .previewImg{
       position: relative;
+      bottom: 100px;
+      left: 20px;
+      z-index: 1;
 
       img{
         width: 100px;
       }
     }
-
   }
+
+  .fieldsTrack{
+    float: left;
+    margin-left: 80px;
+    margin-top: -20px;
+    width: 320px;
+
+    .dropZoneTrack{
+      margin-top: 20px;
+      width: 260px;
+      height: 50px;
+      border: 1px dashed grey;
+      font-family: 'Roboto-Light';
+
+      .dropZoneTrackDescription{
+        font-size: 15px;
+        text-align: center;
+        padding: 5px;
+        cursor: pointer;
+      }
+    }
+
+    .previewTrack{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 15px;
+    }
+  }
+
 }

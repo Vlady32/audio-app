@@ -6,8 +6,6 @@ import UploadTrack from '../UploadTrack';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import * as songsActions from '../../actions/SongsActions';
@@ -15,10 +13,6 @@ import * as songsActions from '../../actions/SongsActions';
 import "./User.less";
 
 class User extends Component{
-
-  state = {
-    openedDialog: false
-  }
 
   componentWillMount(){
     if(this.props.auth.status == 'guest' || !this.props.auth.isAuthenticated){
@@ -29,45 +23,10 @@ class User extends Component{
   }
 
   handleOpenDialog = () => {
-    this.setState({openedDialog: true});
-  };
-
-  handleCloseDialog = () => {
-    this.setState({openedDialog: false});
-  };
+    this.props.songsActions.openUploadDialogTrack()
+  }
 
   render(){
-
-    const styles = {
-      button: {
-        margin: '12px'
-      },
-      trackInput: {
-        cursor: 'pointer',
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        right: 0,
-        left: 0,
-        width: '100%',
-        opacity: 0,
-      }
-    }
-
-    const buttonActions = [
-      <RaisedButton
-        label="Cancel"
-        secondary={true}
-        style={{margin: 12}}
-        onTouchTap={this.handleCloseDialog}
-      />,
-      <RaisedButton
-        label="Add track"
-        primary={true}
-        style={{margin: 12}}
-        onTouchTap={this.handleOpenDialog}
-      />
-    ];
 
     return (
       <div className="User">
@@ -78,15 +37,7 @@ class User extends Component{
           <Tabs>
            <Tab label="Tracks" >
              <RaisedButton label="Dialog" onTouchTap={this.handleOpenDialog} />
-               <Dialog
-                title="Upload a track"
-                actions={buttonActions}
-                modal={false}
-                open={this.state.openedDialog}
-                onRequestClose={this.handleCloseDialog}
-              >
-                <UploadTrack />
-              </Dialog>
+             <UploadTrack />
              <hr/>
              <Table>
               <TableHeader>
