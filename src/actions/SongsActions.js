@@ -2,7 +2,7 @@ import axios from 'axios';
 import {RECEIVE_SONGS_SUCCESS, RECEIVE_SONGS_FAIL, GET_SONGS_REQUEST, SEND_LIKE_REQUEST, RECEIVE_LIKE_SUCCESS, RECEIVE_LIKE_FAIL, OPEN_DIALOG_TRACK, CLOSE_DIALOG_TRACK, GET_COMMENTS_REQUEST, RECEIVE_COMMENTS_SUCCESS, RECEIVE_COMMENTS_FAIL, SEND_COMMENT} from '../constants/ActionTypes';
 import {TOKEN_NAME_LOCAL_STORAGE, PATH_REST_SONGS, PATH_REST_COMMENTS} from '../constants/App';
 
-export const getTracks = (category) => (dispatch) => {
+export const getTracks = (category = '') => (dispatch) => {
 
   dispatch({type: GET_SONGS_REQUEST});
 

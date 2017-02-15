@@ -90,6 +90,7 @@ export default function auth(state = initialState, action){
     case SEND_LOGOUT_REQUEST: {
       localStorage.setItem(TOKEN_NAME_LOCAL_STORAGE, '');
       localStorage.setItem(AUTHENTICATED_NAME_LOCAL_STORAGE, '');
+      localStorage.setItem(STATUS_LOCAL_STORAGE, '');
       return{
         ...state,
         isAuthenticated: false,

@@ -11,7 +11,7 @@ export const sendAuthRequest = (email, password) => (dispatch) => {
   })
   .then((response) => {
     if(response.data.success){
-      dispatch({type: RECEIVE_AUTH_SUCCESS, token: response.data.token, loginName: response.data.email, isAdmin: response.data.status})
+      dispatch({type: RECEIVE_AUTH_SUCCESS, token: response.data.token, loginName: response.data.email, status: response.data.status})
     }else{
       dispatch({type: RECEIVE_AUTH_FAIL, msg: response.data.msg});
     }
