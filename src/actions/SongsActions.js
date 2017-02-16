@@ -1,4 +1,5 @@
 import axios from 'axios';
+import superagent from 'superagent';
 import {RECEIVE_SONGS_SUCCESS, RECEIVE_SONGS_FAIL, GET_SONGS_REQUEST, SEND_LIKE_REQUEST, RECEIVE_LIKE_SUCCESS, RECEIVE_LIKE_FAIL, OPEN_DIALOG_TRACK, CLOSE_DIALOG_TRACK, GET_COMMENTS_REQUEST, RECEIVE_COMMENTS_SUCCESS, RECEIVE_COMMENTS_FAIL, SEND_COMMENT, OPEN_UPLOAD_DIALOG_TRACK, CLOSE_UPLOAD_DIALOG_TRACK, UPLOAD_TRACK, RECEIVE_UPLOAD_TRACK_SUCCESS, RECEIVE_UPLOAD_TRACK_FAIL} from '../constants/ActionTypes';
 import {TOKEN_NAME_LOCAL_STORAGE, PATH_REST_SONGS, PATH_REST_COMMENTS} from '../constants/App';
 
@@ -137,25 +138,43 @@ export const sendComment = (idTrack, comment, login) => (dispatch) => {
 
 export const uploadTrack = (trackName, idCategory, imgFile, trackFile) => (dispatch) => {
 
-  dispatch({type: UPLOAD_TRACK});
+  //dispatch({type: UPLOAD_TRACK});
 
-  axios({
-    method: 'put',
-    url: PATH_REST_SONGS,
-    data: {
-      trackFile: trackFile
-    },
-    headers: {'x-access-token': localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE), 'Content-Type': trackFile.type}
-  })
-  .then((response) => {
-    if(response.data.success){
-      dispatch({type: RECEIVE_UPLOAD_TRACK_SUCCESS, msg: response.data.msg});
-    }else{
-      dispatch({type: RECEIVE_UPLOAD_TRACK_FAIL, msg: response.data.msg});
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+  let files = new FormData();
+  files.append('trackFile', trackFile);
+  files.append('imgFile', imgFile);
+  // // track.append('trackName', trackName);
+  // // track.append('idCategory', idCategory);
+  //
+  //
+  superagent.
+    post(PATH_REST_SONGS)
+    .send({files, 'trackName': trackName, 'idCategory': idCategory})
+    .set('x-access-token', localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE))
+    .end((err, resp) => {
+      if(err){
+        console.log(err);
+      }
+      console.log(resp);
+    })
+
+  // axios({
+  //   method: 'post',
+  //   url: PATH_REST_SONGS,
+  //   data: {
+  //     track
+  //   },
+  //   headers: {'x-access-token': localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE), 'Content-Type': trackFile.type}
+  // })
+  // .then((response) => {
+  //   if(response.data.success){
+  //     dispatch({type: RECEIVE_UPLOAD_TRACK_SUCCESS, msg: response.data.msg});
+  //   }else{
+  //     dispatch({type: RECEIVE_UPLOAD_TRACK_FAIL, msg: response.data.msg});
+  //   }
+  // })
+  // .catch((error) => {
+  //   console.log(error);
+  // });
 
 }
