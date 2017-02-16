@@ -8,19 +8,33 @@ import TextField from 'material-ui/TextField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
+import LinearProgress from 'material-ui/LinearProgress';
+import Snackbar from 'material-ui/Snackbar';
 import Dropzone from 'react-dropzone';
 
 import * as songsActions from '../../actions/SongsActions';
 
-import "./UploadTrack.less";
+import "./UploadChangeTrack.less";
 
-class UploadTrack extends Component {
+class UploadChangeTrack extends Component {
 
   state = {
     valueCategory: 0,
     imgFile: '',
     trackFile: '',
-    nameTrack: ''
+    nameTrack: '',
+    disabledButton: false
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.tracks.eventUploadChangeDialog == 'change'){
+      this.setState({
+        valueCategory: this.props.tracks.arrayCategories[this.props.tracks.arrayCategories.map((el) => el._id).indexOf(this.props.tracks.arraySongs[nextProps.tracks.idTrackForChange].category)]._id,
+        imgFile: this.props.tracks.arraySongs[nextProps.tracks.idTrackForChange].urlImg,
+        trackFile: this.props.tracks.arraySongs[nextProps.tracks.idTrackForChange].urlTrack,
+        nameTrack: this.props.tracks.arraySongs[nextProps.tracks.idTrackForChange].name,
+      })
+    }
   }
 
   handleCategoryChange = (event, index, value) => {
@@ -41,11 +55,38 @@ class UploadTrack extends Component {
 
   uploadTrack = () => {
     this.props.songsActions.uploadTrack(this.state.nameTrack, this.state.valueCategory, this.state.imgFile, this.state.trackFile);
+    this.setState({disabledButton: true});
+    this.clearForm()
   };
 
-  handleCloseDialog = () => {
-    this.props.songsActions.closeUploadDialogTrack();
+  changeTrack = () => {
+    this.props.songsActions.changeTrack(this.props.tracks.arraySongs[this.props.tracks.idTrackForChange]._id, this.state.nameTrack, this.state.valueCategory, this.state.imgFile, this.state.trackFile);
+    this.setState({disabledButton: true});
   };
+
+  deleteTrack = () => {
+    this.props.songsActions.deleteTrack(this.props.tracks.arraySongs[this.props.tracks.idTrackForChange]._id);
+    this.clearForm();
+  }
+
+  handleCloseDialog = () => {
+    this.props.songsActions.closeUploadChangeDialogTrack();
+    this.clearForm();
+  };
+
+  handleSnackbarClose = () => {
+    this.props.songsActions.clearMessageUpload();
+    this.setState({disabledButton: false});
+  }
+
+  clearForm = () => {
+    this.setState({
+      valueCategory: 0,
+      imgFile: '',
+      trackFile: '',
+      nameTrack: ''
+    })
+  }
 
   render(){
 
@@ -67,17 +108,29 @@ class UploadTrack extends Component {
 
     const buttonActions = [
       <RaisedButton
+        label="Clear"
+        style={{margin: 12}}
+        onTouchTap={this.clearForm}
+      />,
+      <RaisedButton
+        backgroundColor="#9E9E9E"
+        label="Delete"
+        style={{margin: 12}}
+        disabled={this.props.tracks.eventUploadChangeDialog !== 'change'}
+        onTouchTap={this.deleteTrack}
+      />,
+      <RaisedButton
         label="Cancel"
         secondary={true}
         style={{margin: 12}}
         onTouchTap={this.handleCloseDialog}
       />,
       <RaisedButton
-        label="Add track"
+        label= {this.props.tracks.eventUploadChangeDialog == 'upload' ? "Add track" : 'Save'}
         primary={true}
         style={{margin: 12}}
-        onTouchTap={this.uploadTrack}
-        disabled={this.state.valueCategory == 0 || !this.state.trackFile || !this.state.nameTrack}
+        onTouchTap={this.props.tracks.eventUploadChangeDialog == 'upload' ? this.uploadTrack : this.changeTrack}
+        disabled={this.state.valueCategory == 0 || !this.state.trackFile || !this.state.nameTrack || this.state.disabledButton}
       />
     ];
 
@@ -86,7 +139,7 @@ class UploadTrack extends Component {
        title="Upload a track"
        actions={buttonActions}
        modal={false}
-       open={this.props.tracks.isOpenedUploadDialogTrack}
+       open={this.props.tracks.isOpenedUploadChangeDialogTrack}
        onRequestClose={this.handleCloseDialog}
        contentStyle={{width: '550px'}}
      >
@@ -97,7 +150,7 @@ class UploadTrack extends Component {
           </Dropzone>
           {this.state.imgFile ? (
             <div className="previewImg">
-              <img src={this.state.imgFile.preview} alt="Preview image"/>
+              <img src={this.state.imgFile.preview ? this.state.imgFile.preview : this.state.imgFile} alt="Preview image"/>
             </div>
           ) : ''}
         </div>
@@ -108,6 +161,7 @@ class UploadTrack extends Component {
              floatingLabelText="Name of track"
              errorText={this.state.nameTrack == '' ? "This field is required" : ''}
              onChange={this.handleNameTrackChange}
+             value={this.state.nameTrack}
            />
            <div className="categories">
              <SelectField
@@ -133,7 +187,14 @@ class UploadTrack extends Component {
              </div>
            ) : ''}
          </div>
+         {this.props.tracks.uploadingTrack ? <LinearProgress style={{top: '15px'}} mode="indeterminate" /> : ''}
       </div>
+      <Snackbar
+        open={this.props.tracks.uploadedTrackMessage ? true : false}
+        message={this.props.tracks.uploadedTrackMessage}
+        autoHideDuration={3000}
+        onRequestClose={this.handleSnackbarClose}
+      />
     </Dialog>
     )
   }
@@ -152,4 +213,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UploadTrack);
+export default connect(mapStateToProps, mapDispatchToProps)(UploadChangeTrack);

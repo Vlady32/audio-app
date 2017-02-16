@@ -1,4 +1,4 @@
-import {RECEIVE_SONGS_SUCCESS, GET_SONGS_REQUEST, RECEIVE_SONGS_FAIL, SEND_LIKE_REQUEST, RECEIVE_LIKE_SUCCESS, RECEIVE_LIKE_FAIL, SEARCH_SONG, OPEN_DIALOG_TRACK, CLOSE_DIALOG_TRACK, GET_COMMENTS_REQUEST, RECEIVE_COMMENTS_SUCCESS, RECEIVE_COMMENTS_FAIL, SEND_COMMENT, OPEN_UPLOAD_DIALOG_TRACK, CLOSE_UPLOAD_DIALOG_TRACK, UPLOAD_TRACK, RECEIVE_UPLOAD_TRACK_SUCCESS, RECEIVE_UPLOAD_TRACK_FAIL} from '../constants/ActionTypes';
+import {RECEIVE_SONGS_SUCCESS, GET_SONGS_REQUEST, RECEIVE_SONGS_FAIL, SEND_LIKE_REQUEST, RECEIVE_LIKE_SUCCESS, RECEIVE_LIKE_FAIL, SEARCH_SONG, OPEN_DIALOG_TRACK, CLOSE_DIALOG_TRACK, GET_COMMENTS_REQUEST, RECEIVE_COMMENTS_SUCCESS, RECEIVE_COMMENTS_FAIL, SEND_COMMENT, OPEN_UPLOAD_CHANGE_DIALOG_TRACK, CLOSE_UPLOAD_CHANGE_DIALOG_TRACK, UPLOAD_TRACK, RECEIVE_UPLOAD_TRACK_SUCCESS, RECEIVE_UPLOAD_TRACK_FAIL, CLEAR_MESSAGE_UPLOAD, DELETE_TRACK, RECEIVE_DELETE_TRACK_SUCCESS, RECEIVE_DELETE_TRACK_FAIL} from '../constants/ActionTypes';
 
 const initialState = {
   arraySongs : [],
@@ -10,9 +10,12 @@ const initialState = {
   errorMsg: '',
   idDialogTrack: -1,
   isOpenedDialogTrack: false,
-  isOpenedUploadDialogTrack: false,
+  isOpenedUploadChangeDialogTrack: false,
+  eventUploadChangeDialog: '',
+  idTrackForChange: 0,
   uploadingTrack: false,
-  uploadedTrackMessage: ''
+  uploadedTrackMessage: '',
+  deletedTrackMessage: ''
 }
 
 export default function tracks(state = initialState, action){
@@ -72,17 +75,20 @@ export default function tracks(state = initialState, action){
       }
     }
 
-    case OPEN_UPLOAD_DIALOG_TRACK: {
+    case OPEN_UPLOAD_CHANGE_DIALOG_TRACK: {
       return{
         ...state,
-        isOpenedUploadDialogTrack: true
+        isOpenedUploadChangeDialogTrack: true,
+        eventUploadChangeDialog: action.event,
+        idTrackForChange: action.idTrack
       }
     }
 
-    case CLOSE_UPLOAD_DIALOG_TRACK: {
+    case CLOSE_UPLOAD_CHANGE_DIALOG_TRACK: {
       return{
         ...state,
-        isOpenedUploadDialogTrack: false
+        isOpenedUploadChangeDialogTrack: false,
+        eventUploadChangeDialog: ''
       }
     }
 
@@ -136,6 +142,30 @@ export default function tracks(state = initialState, action){
         ...state,
         uploadingTrack: false,
         uploadedTrackMessage: action.msg
+      }
+    }
+
+    case CLEAR_MESSAGE_UPLOAD: {
+      return{
+        ...state,
+        uploadedTrackMessage: '',
+        deletedTrackMessage: ''
+      }
+    }
+
+    case RECEIVE_DELETE_TRACK_SUCCESS: {
+      return{
+        ...state,
+        deletedTrackMessage: action.msg,
+        isOpenedUploadChangeDialogTrack: false
+      }
+    }
+
+    case RECEIVE_DELETE_TRACK_FAIL: {
+      return{
+        ...state,
+        deletedTrackMessage: action.msg,
+        isOpenedUploadChangeDialogTrack: false
       }
     }
 

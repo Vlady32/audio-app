@@ -1,6 +1,6 @@
 import axios from 'axios';
 import superagent from 'superagent';
-import {RECEIVE_SONGS_SUCCESS, RECEIVE_SONGS_FAIL, GET_SONGS_REQUEST, SEND_LIKE_REQUEST, RECEIVE_LIKE_SUCCESS, RECEIVE_LIKE_FAIL, OPEN_DIALOG_TRACK, CLOSE_DIALOG_TRACK, GET_COMMENTS_REQUEST, RECEIVE_COMMENTS_SUCCESS, RECEIVE_COMMENTS_FAIL, SEND_COMMENT, OPEN_UPLOAD_DIALOG_TRACK, CLOSE_UPLOAD_DIALOG_TRACK, UPLOAD_TRACK, RECEIVE_UPLOAD_TRACK_SUCCESS, RECEIVE_UPLOAD_TRACK_FAIL} from '../constants/ActionTypes';
+import {RECEIVE_SONGS_SUCCESS, RECEIVE_SONGS_FAIL, GET_SONGS_REQUEST, SEND_LIKE_REQUEST, RECEIVE_LIKE_SUCCESS, RECEIVE_LIKE_FAIL, OPEN_DIALOG_TRACK, CLOSE_DIALOG_TRACK, GET_COMMENTS_REQUEST, RECEIVE_COMMENTS_SUCCESS, RECEIVE_COMMENTS_FAIL, SEND_COMMENT, OPEN_UPLOAD_CHANGE_DIALOG_TRACK, CLOSE_UPLOAD_CHANGE_DIALOG_TRACK, UPLOAD_TRACK, RECEIVE_UPLOAD_TRACK_SUCCESS, RECEIVE_UPLOAD_TRACK_FAIL, CLEAR_MESSAGE_UPLOAD, DELETE_TRACK, RECEIVE_DELETE_TRACK_SUCCESS, RECEIVE_DELETE_TRACK_FAIL} from '../constants/ActionTypes';
 import {TOKEN_NAME_LOCAL_STORAGE, PATH_REST_SONGS, PATH_REST_COMMENTS} from '../constants/App';
 
 export const getTracks = (category = '') => (dispatch) => {
@@ -79,12 +79,12 @@ export const closeDialogTrack = () => (dispatch) => {
   dispatch({type: CLOSE_DIALOG_TRACK});
 };
 
-export const openUploadDialogTrack = () => (dispatch) => {
-  dispatch({type: OPEN_UPLOAD_DIALOG_TRACK});
+export const openUploadChangeDialogTrack = (event, idTrack=0) => (dispatch) => {
+  dispatch({type: OPEN_UPLOAD_CHANGE_DIALOG_TRACK, event: event, idTrack: idTrack});
 };
 
-export const closeUploadDialogTrack = () => (dispatch) => {
-  dispatch({type: CLOSE_UPLOAD_DIALOG_TRACK});
+export const closeUploadChangeDialogTrack = () => (dispatch) => {
+  dispatch({type: CLOSE_UPLOAD_CHANGE_DIALOG_TRACK});
 };
 
 export const getComments = (idTrack) => (dispatch) => {
@@ -138,43 +138,76 @@ export const sendComment = (idTrack, comment, login) => (dispatch) => {
 
 export const uploadTrack = (trackName, idCategory, imgFile, trackFile) => (dispatch) => {
 
-  //dispatch({type: UPLOAD_TRACK});
+  dispatch({type: UPLOAD_TRACK});
 
   let files = new FormData();
   files.append('trackFile', trackFile);
   files.append('imgFile', imgFile);
-  // // track.append('trackName', trackName);
-  // // track.append('idCategory', idCategory);
-  //
-  //
+  files.append('trackName', trackName);
+  files.append('idCategory', idCategory);
+
   superagent.
     post(PATH_REST_SONGS)
-    .send({files, 'trackName': trackName, 'idCategory': idCategory})
+    .send(files)
     .set('x-access-token', localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE))
     .end((err, resp) => {
       if(err){
         console.log(err);
       }
-      console.log(resp);
+      if(resp.body.success){
+        dispatch({type: RECEIVE_UPLOAD_TRACK_SUCCESS, msg: resp.body.msg});
+      }else{
+        dispatch({type: RECEIVE_UPLOAD_TRACK_FAIL, msg: resp.body.error});
+      }
     })
+}
 
-  // axios({
-  //   method: 'post',
-  //   url: PATH_REST_SONGS,
-  //   data: {
-  //     track
-  //   },
-  //   headers: {'x-access-token': localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE), 'Content-Type': trackFile.type}
-  // })
-  // .then((response) => {
-  //   if(response.data.success){
-  //     dispatch({type: RECEIVE_UPLOAD_TRACK_SUCCESS, msg: response.data.msg});
-  //   }else{
-  //     dispatch({type: RECEIVE_UPLOAD_TRACK_FAIL, msg: response.data.msg});
-  //   }
-  // })
-  // .catch((error) => {
-  //   console.log(error);
-  // });
+export const changeTrack = (idTrack, trackName, idCategory, imgFile, trackFile) => (dispatch) => {
 
+  dispatch({type: UPLOAD_TRACK});
+
+  let files = new FormData();
+  files.append('trackFile', trackFile);
+  files.append('imgFile', imgFile);
+  files.append('idTrack', idTrack);
+  files.append('trackName', trackName);
+  files.append('idCategory', idCategory);
+
+  superagent.
+    put("http://localhost:8080/api/changeTrack")
+    .send(files)
+    .set('x-access-token', localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE))
+    .end((err, resp) => {
+      if(err){
+        console.log(err);
+      }
+      if(resp.body.success){
+        dispatch({type: RECEIVE_UPLOAD_TRACK_SUCCESS, msg: resp.body.msg});
+      }else{
+        dispatch({type: RECEIVE_UPLOAD_TRACK_FAIL, msg: resp.body.error});
+      }
+    })
+}
+
+export const deleteTrack = (idTrack) => (dispatch) => {
+
+  dispatch({type: DELETE_TRACK});
+
+  axios.delete(PATH_REST_SONGS + idTrack,{
+    headers: {'x-access-token': localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE)}
+  })
+  .then((response) => {
+    if(response.data.success){
+      dispatch({type: RECEIVE_DELETE_TRACK_SUCCESS, msg: response.data.msg});
+    }else
+      dispatch({type: RECEIVE_DELETE_TRACK_FAIL, MSG: response.data.error});
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+};
+
+export const clearMessageUpload = () => (dispatch) => {
+  dispatch({type: CLEAR_MESSAGE_UPLOAD});
 }
