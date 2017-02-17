@@ -101,8 +101,8 @@ const Nav = ({pathname}) => {
               </Link>
             </MuiThemeProvider>
             <MuiThemeProvider>
-              <Link to="/deep">
-                <RaisedButton label="Deep" style={pathname == '/deep'
+              <Link to="/lounge">
+                <RaisedButton label="Lounge" style={pathname == '/lounge'
                   ? navStyles.borderStyleActiveTab
                   : navStyles.borderStyle}/>
             </Link>

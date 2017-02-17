@@ -27,7 +27,7 @@ ReactDOM.render(
       <Route path="chillout" component={App}/>
       <Route path="house" component={App}/>
       <Route path="dubstep" component={App}/>
-      <Route path="deep" component={App}/>
+      <Route path="lounge" component={App}/>
     </Route>
     <Route path="user/:userId" component={User}/>
   </Router>
