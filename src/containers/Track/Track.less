@@ -1,4 +1,4 @@
-.songCard{
+.songCard {
   float: left;
   width: 18%;
   height: 130px;
@@ -6,47 +6,46 @@
   background-color: #fff;
   margin-top: 20px;
 
-  .songImg{
+  .songImg {
     width: 92%;
-    margin: 0 auto;
-    margin-top: 4%;
+    margin: 4% auto 0;
     height: 70px;
     background-position: 50%;
     background-repeat: no-repeat;
     background-size: cover;
 
-    .blackBackground{
+    .blackBackground {
       width: 100%;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background-color .2s ease-in-out;
+      transition: background-color 0.2s ease-in-out;
     }
 
-    .blackBackgroundHover{
+    .blackBackgroundHover {
       .blackBackground;
       background-color: rgba(0,0,0,.8);
       cursor: pointer;
     }
 
-    .blackBackground:hover{
+    .blackBackground:hover {
       background-color: rgba(0,0,0,.8);
       cursor: pointer;
-      transition: background-color .2s ease-in-out;
+      transition: background-color 0.2s ease-in-out;
     }
   }
 
-  .songBottomLine{
+  .songBottomLine {
     margin-top: 10px;
 
-    .songIcon{
+    .songIcon {
       float: left;
       width: 15%;
       margin-left: 10px;
       margin-top: 5px;
 
-      img{
+      img {
         text-align: center;
         border-radius: 100%;
         width: 24px;
@@ -54,63 +53,58 @@
       }
     }
 
-    .songName{
+    .songName {
       float: left;
       width: 70%;
       font-size: 12px;
       font-family: 'Roboto-Regular';
 
-      .songTitle{
+      .songTitle {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         text-transform: capitalize;
 
-        &:hover{
+        &:hover {
           text-decoration: underline;
           cursor: pointer;
         }
       }
 
-      .songCtg{
+      .songCtg {
         line-height: 0;
         text-transform: capitalize;
       }
-
     }
 
-    .songLike{
+    .songLike {
       float: left;
       width: 10%;
       margin-top: 20px;
       cursor: pointer;
     }
-
   }
-
 }
 
-.dialogTrack{
-
-  .titleSection{
-
-    .trackLogo{
+.dialogTrack {
+  .titleSection {
+    .trackLogo {
       float: left;
 
-      img{
+      img {
         width: 100px;
         height: 100px;
       }
     }
 
-    .trackInfo{
-        float: left;
-        margin-left: 20px;
-        font-family: 'Roboto-Light';
-        width: 80%;
-        color: black;
+    .trackInfo {
+      float: left;
+      margin-left: 20px;
+      font-family: 'Roboto-Light';
+      width: 80%;
+      color: black;
 
-      .trackName{
+      .trackName {
         margin-top: -8px;
         font-size: 28px;
         white-space: nowrap;
@@ -119,32 +113,32 @@
         text-transform: capitalize;
       }
 
-      .trackCategory{
+      .trackCategory {
         text-transform: capitalize;
         color: grey;
         font-size: 18px;
         margin-top: 5px;
       }
 
-      .counts{
+      .counts {
         margin-top: 15px;
         color: grey;
 
-        .countLikes{
+        .countLikes {
           float: left;
 
-          .countLikesText{
+          .countLikesText {
             position: relative;
             top: -32px;
             left: 25px;
           }
         }
 
-        .countListenings{
+        .countListenings {
           float: left;
           margin-left: 10px;
 
-          .countListeningsText{
+          .countListeningsText {
             position: relative;
             top: -32px;
             left: 25px;
@@ -154,13 +148,12 @@
     }
   }
 
-  .sectionTypingMessage{
+  .sectionTypingMessage {
     clear: both;
   }
 
-  .sectionComments{
+  .sectionComments {
     clear: both;
     padding-top: 20px;
   }
-
 }

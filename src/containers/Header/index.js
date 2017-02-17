@@ -2,26 +2,27 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router';
+
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import {grey500,grey300} from 'material-ui/styles/colors';
+import {grey500, grey300} from 'material-ui/styles/colors';
 import Snackbar from 'material-ui/Snackbar';
 
 import * as authActions from '../../actions/AuthActions';
 import * as songsActions from '../../actions/SongsActions';
 import * as playerActions from '../../actions/PlayerActions';
 
-import {ERROR_VALID_INPUT,ERROR_PASSWORD_CONFIRMED_PASSWORD,SUCCESS_REGISTER,SUCCESS_AUTHENTICATION} from '../../constants/App';
+import {ERROR_VALID_INPUT, ERROR_PASSWORD_CONFIRMED_PASSWORD, SUCCESS_REGISTER, SUCCESS_AUTHENTICATION} from '../../constants/App';
 
 var classNames = require('classnames');
 
 import './Header.less';
 
-class Header extends Component{
+class Header extends Component {
 
   state = {
     isShownSignIn: false,
@@ -35,9 +36,9 @@ class Header extends Component{
   };
 
   toggleTabs = (tab) => {
-    if(tab == 1){
+    if (tab == 1) {
       this.setState({isLoginTab: true});
-    }else{
+    } else {
       this.setState({isLoginTab: false});
     }
   };
@@ -45,18 +46,18 @@ class Header extends Component{
   validateForm = (login, password, confirmedPassword = '') => {
     let isValidated = true;
 
-    if(login.length < 4){
+    if (login.length < 4) {
       this.setState({loginErrorText: ERROR_VALID_INPUT});
       isValidated = false;
     }
 
-    if(password.length < 4){
+    if (password.length < 4) {
       this.setState({passwordErrorText: ERROR_VALID_INPUT});
       isValidated = false;
     }
 
-    if(confirmedPassword){
-      if(password !== confirmedPassword){
+    if (confirmedPassword) {
+      if (password !== confirmedPassword) {
         this.setState({confirmedPasswordErrorText: ERROR_PASSWORD_CONFIRMED_PASSWORD});
         isValidated = false;
       }
@@ -69,23 +70,15 @@ class Header extends Component{
     let loginValue = this.refs.logInFieldLogin.getValue();
     let passwordValue = this.refs.passwordFieldLogin.getValue();
 
-    if(this.validateForm(loginValue, passwordValue)){
-      this.setState({
-        isShownErrorAuth: true
-      });
+    if (this.validateForm(loginValue, passwordValue)) {
+      this.setState({isShownErrorAuth: true});
       this.props.authActions.sendAuthRequest(loginValue, passwordValue);
     }
 
   }
 
   onChangeInput = () => {
-    this.setState({
-      loginErrorText: '',
-      passwordErrorText: '',
-      confirmedPasswordErrorText: '',
-      isShownErrorAuth: false,
-      isShownTextReg: false
-    });
+    this.setState({loginErrorText: '', passwordErrorText: '', confirmedPasswordErrorText: '', isShownErrorAuth: false, isShownTextReg: false});
   }
 
   handleSignUp = () => {
@@ -93,10 +86,8 @@ class Header extends Component{
     let passwordValue = this.refs.passwordFieldRegister.getValue();
     let confirmedPasswordValue = this.refs.confirmedPasswordFieldRegister.getValue();
 
-    if(this.validateForm(loginValue, passwordValue, confirmedPasswordValue)){
-      this.setState({
-        isShownTextReg: true
-      });
+    if (this.validateForm(loginValue, passwordValue, confirmedPasswordValue)) {
+      this.setState({isShownTextReg: true});
       this.props.authActions.sendRegRequest(loginValue, passwordValue);
     }
   }
@@ -112,10 +103,10 @@ class Header extends Component{
 
   handleLoginButton = () => {
     let signIn = document.querySelector(".signIn");
-    if(this.state.isShownSignIn){
+    if (this.state.isShownSignIn) {
       signIn.classList.add("displayNone");
       this.setState({isShownSignIn: false});
-    }else {
+    } else {
       signIn.classList.remove("displayNone");
       this.setState({isShownSignIn: true});
     }
@@ -127,13 +118,13 @@ class Header extends Component{
   }
 
   onKeyPress = (event) => {
-    if(event.key == 'Enter'){
+    if (event.key == 'Enter') {
       this.props.playerActions.closePlayer();
       this.props.songsActions.searchSong(this.refs.searchField.input.value.toLowerCase());
     }
   }
 
-  render(){
+  render() {
 
     let searchClasses = classNames('glyphicon', 'glyphicon-search');
     let userClasses = classNames('glyphicon', 'glyphicon-user');
@@ -145,10 +136,10 @@ class Header extends Component{
         color: grey500
       },
       underlineStyle: {
-        borderColor: grey500,
+        borderColor: grey500
       },
       underlineFocusStyle: {
-        borderColor: grey300,
+        borderColor: grey300
       }
     };
 
@@ -157,35 +148,32 @@ class Header extends Component{
         fontSize: 24,
         paddingTop: 16,
         marginBottom: 12,
-        fontWeight: 400,
-      },
+        fontWeight: 400
+      }
     };
 
-    const cancelbutton = <RaisedButton
-      label="Cancel"
-      secondary={true}
-      style={{margin: 12}}
-      onTouchTap={this.handleCloseDialogs}
-    />;
+    const cancelbutton = <RaisedButton label="Cancel" secondary={true} style={{
+      margin: 12
+    }} onTouchTap={this.handleCloseDialogs}/>;
 
     const actionsLogIn = [
-      cancelbutton,
-      <RaisedButton
-        label="Log In"
-        primary={true}
-        style={{margin: 12}}
-        onTouchTap={this.handleLogIn}
-      />
+      cancelbutton, < RaisedButton label = "Log In" primary = {
+        true
+      }
+      style = {{margin: 12}}
+      onTouchTap = {
+        this.handleLogIn
+      } />
     ];
 
     const actionsSignUp = [
-      cancelbutton,
-      <RaisedButton
-        label="Sign Up"
-        primary={true}
-        style={{margin: 12}}
-        onTouchTap={this.handleSignUp}
-      />
+      cancelbutton, < RaisedButton label = "Sign Up" primary = {
+        true
+      }
+      style = {{margin: 12}}
+      onTouchTap = {
+        this.handleSignUp
+      } />
     ];
 
     return (
@@ -201,7 +189,10 @@ class Header extends Component{
               <div className="search">
                 <span className={searchClasses} aria-hidden="true"></span>
                 <MuiThemeProvider>
-                  <TextField ref="searchField" onKeyPress={this.onKeyPress} onChange={this.onChangeSearchField} hintText="SEARCH" hintStyle={styles.hintStyle} underlineStyle={styles.underlineStyle} underlineFocusStyle={styles.underlineFocusStyle} inputStyle={{color: grey300, width: '80%'}}/>
+                  <TextField ref="searchField" onKeyPress={this.onKeyPress} onChange={this.onChangeSearchField} hintText="SEARCH" hintStyle={styles.hintStyle} underlineStyle={styles.underlineStyle} underlineFocusStyle={styles.underlineFocusStyle} inputStyle={{
+                    color: grey300,
+                    width: '80%'
+                  }}/>
                 </MuiThemeProvider>
               </div>
             </div>
@@ -211,92 +202,69 @@ class Header extends Component{
                 <span className={downClasses} aria-hidden="true"></span>
               </div>
               <MuiThemeProvider>
-                {this.props.auth.isAuthenticated ? (
-                  <div className={signInClasses}>
-                    <Link to={`/user/${this.props.auth.loginName}`}>
-                      <RaisedButton label={this.props.auth.loginName} className="but"/>
-                    </Link>
-                    <RaisedButton label="Log Out"  className="but" onTouchTap={this.props.authActions.logOut}/>
-                  </div>
-                ) : (
-                  <div className={signInClasses}>
-                    <RaisedButton label="Log In"  className="but" onTouchTap={this.handleOpenLoginDialog}/>
-                  </div>
-                )}
+                {this.props.auth.isAuthenticated
+                  ? (
+                    <div className={signInClasses}>
+                      <Link to={`/user/${this.props.auth.loginName}`}>
+                        <RaisedButton label={this.props.auth.loginName} className="but"/>
+                      </Link>
+                      <RaisedButton label="Log Out" className="but" onTouchTap={this.props.authActions.logOut}/>
+                    </div>
+                  )
+                  : (
+                    <div className={signInClasses}>
+                      <RaisedButton label="Log In" className="but" onTouchTap={this.handleOpenLoginDialog}/>
+                    </div>
+                  )}
               </MuiThemeProvider>
 
             </div>
           </div>
         </div>
         <MuiThemeProvider>
-          <Dialog
-            actions={this.state.isLoginTab ? actionsLogIn : actionsSignUp}
-            modal={false}
-            open={this.state.isOpenedLoginDialog}
-            onRequestClose={this.handleCloseLoginDialog}
-            contentStyle={{width: '400px', textAlign: 'center'}}
-          >
+          <Dialog actions={this.state.isLoginTab
+            ? actionsLogIn
+            : actionsSignUp} modal={false} open={this.state.isOpenedLoginDialog} onRequestClose={this.handleCloseLoginDialog} contentStyle={{
+            width: '400px',
+            textAlign: 'center'
+          }}>
             <Tabs>
               <Tab label="Log In" onClick={this.toggleTabs.bind(this, 1)}>
-                {this.props.auth.fetchingAuth ? (
-                  <CircularProgress innerStyle={{marginTop: '50px', marginLeft: '130px'}} size={80} thickness={5} />
-                ) : (
+                {this.props.auth.fetchingAuth
+                  ? (<CircularProgress innerStyle={{
+                    marginTop: '50px',
+                    marginLeft: '130px'
+                  }} size={80} thickness={5}/>)
+                  : (
                     <div>
-                      <TextField
-                        hintText="Login"
-                        floatingLabelText="Login"
-                        fullWidth={true}
-                        errorText={this.state.loginErrorText}
-                        ref="logInFieldLogin"
-                        onChange={this.onChangeInput}
-                      /> <br/>
-                      <TextField
-                        hintText="Password"
-                        floatingLabelText="Password"
-                        type="password"
-                        fullWidth={true}
-                        errorText={this.state.passwordErrorText}
-                        ref="passwordFieldLogin"
-                        onChange={this.onChangeInput}
-                      />
-                    {this.state.isShownErrorAuth ? <p style={{color: 'red'}}>{this.props.auth.error_msg}</p> : ''}
+                      <TextField hintText="Login" floatingLabelText="Login" fullWidth={true} errorText={this.state.loginErrorText} ref="logInFieldLogin" onChange={this.onChangeInput}/>
+                      <br/>
+                      <TextField hintText="Password" floatingLabelText="Password" type="password" fullWidth={true} errorText={this.state.passwordErrorText} ref="passwordFieldLogin" onChange={this.onChangeInput}/> {this.state.isShownErrorAuth
+                        ? <p style={{
+                            color: 'red'
+                          }}>{this.props.auth.error_msg}</p>
+                        : ''}
                     </div>
                   )
-                }
+              }
               </Tab>
               <Tab label="Sign Up" onClick={this.toggleTabs.bind(this, 2)}>
-                {this.props.auth.fetchingReg ? (
-                  <CircularProgress innerStyle={{marginTop: '50px', marginLeft: '130px'}} size={80} thickness={5} />
-                ) : (
+                {this.props.auth.fetchingReg
+                  ? (<CircularProgress innerStyle={{
+                    marginTop: '50px',
+                    marginLeft: '130px'
+                  }} size={80} thickness={5}/>)
+                  : (
                     <div>
-                      <TextField
-                        hintText="Login"
-                        floatingLabelText="Login"
-                        fullWidth={true}
-                        ref="logInFieldRegister"
-                        errorText={this.state.loginErrorText}
-                        onChange={this.onChangeInput}
-                      /> <br/>
-                      <TextField
-                        hintText="Password"
-                        floatingLabelText="Password"
-                        type="password"
-                        fullWidth={true}
-                        ref="passwordFieldRegister"
-                        errorText={this.state.passwordErrorText}
-                        onChange={this.onChangeInput}
-                      /><br />
-                      <TextField
-                        hintText="Confirm password"
-                        floatingLabelText="Confirm password"
-                        type="password"
-                        fullWidth={true}
-                        ref="confirmedPasswordFieldRegister"
-                        errorText={this.state.confirmedPasswordErrorText}
-                        onChange={this.onChangeInput}
-                      />
-                    {this.state.isShownTextReg ? <p style={{color: 'red'}}>{this.props.auth.msg_reg}</p> : ''}
-                  </div>
+                      <TextField hintText="Login" floatingLabelText="Login" fullWidth={true} ref="logInFieldRegister" errorText={this.state.loginErrorText} onChange={this.onChangeInput}/>
+                      <br/>
+                      <TextField hintText="Password" floatingLabelText="Password" type="password" fullWidth={true} ref="passwordFieldRegister" errorText={this.state.passwordErrorText} onChange={this.onChangeInput}/><br/>
+                      <TextField hintText="Confirm password" floatingLabelText="Confirm password" type="password" fullWidth={true} ref="confirmedPasswordFieldRegister" errorText={this.state.confirmedPasswordErrorText} onChange={this.onChangeInput}/> {this.state.isShownTextReg
+                        ? <p style={{
+                            color: 'red'
+                          }}>{this.props.auth.msg_reg}</p>
+                        : ''}
+                    </div>
                   )
                 }
               </Tab>
@@ -304,20 +272,10 @@ class Header extends Component{
           </Dialog>
         </MuiThemeProvider>
         <MuiThemeProvider>
-          <Snackbar
-            open={this.props.auth.isAuthenticatedDialog}
-            message={SUCCESS_AUTHENTICATION}
-            autoHideDuration={3000}
-            onRequestClose={this.handleSnackbarClose}
-          />
-      </MuiThemeProvider>
+          <Snackbar open={this.props.auth.isAuthenticatedDialog} message={SUCCESS_AUTHENTICATION} autoHideDuration={3000} onRequestClose={this.handleSnackbarClose}/>
+        </MuiThemeProvider>
         <MuiThemeProvider>
-          <Snackbar
-            open={this.props.auth.isRegistered}
-            message={SUCCESS_REGISTER}
-            autoHideDuration={3000}
-            onRequestClose={this.handleSnackbarClose}
-          />
+          <Snackbar open={this.props.auth.isRegistered} message={SUCCESS_REGISTER} autoHideDuration={3000} onRequestClose={this.handleSnackbarClose}/>
         </MuiThemeProvider>
       </div>
     )
@@ -326,16 +284,14 @@ class Header extends Component{
 }
 
 const mapStateToProps = (state) => {
-  return {
-    auth: state.auth
-  }
+  return {auth: state.auth}
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     authActions: bindActionCreators(authActions, dispatch),
     songsActions: bindActionCreators(songsActions, dispatch),
-    playerActions: bindActionCreators(playerActions, dispatch),
+    playerActions: bindActionCreators(playerActions, dispatch)
   }
 }
 

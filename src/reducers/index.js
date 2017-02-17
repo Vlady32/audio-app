@@ -6,10 +6,4 @@ import auth from './auth';
 import player from './player';
 import users from './users';
 
-export default combineReducers({
-  routing: routerReducer,
-  auth,
-  users,
-  tracks,
-  player
-})
+export default combineReducers({routing: routerReducer, auth, users, tracks, player})

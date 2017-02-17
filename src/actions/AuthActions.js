@@ -1,23 +1,46 @@
 import axios from 'axios';
-import {SEND_AUTH_REQUEST, RECEIVE_AUTH_SUCCESS, RECEIVE_AUTH_FAIL,SERVER_CONNECTION_ERROR, SEND_REG_REQUEST, RECEIVE_REG_SUCCESS, RECEIVE_REG_FAIL, CLEAR_LOGIN_REG_MESSAGES, SEND_LOGOUT_REQUEST, RECEIVE_LOGOUT_SUCCESS, RECEIVE_LOGOUT_FAIL, GET_USERS_REQUEST, RECEIVE_USERS_SUCCESS, RECEIVE_USERS_FAIL, ADD_USER_REQUEST, RECEIVE_ADD_USER_SUCCESS, RECEIVE_ADD_USER_FAIL, CLEAR_ADD_MESSAGES, EDIT_USER_REQUEST, RECEIVE_EDIT_USER_SUCCESS, RECEIVE_EDIT_USER_FAIL, DELETE_USER_REQUEST, RECEIVE_DELETE_USER_SUCCESS, RECEIVE_DELETE_USER_FAIL} from '../constants/ActionTypes';
-import {PATH_REST_USERS, TOKEN_NAME_LOCAL_STORAGE} from '../constants/App';
+import {
+  SEND_AUTH_REQUEST,
+  RECEIVE_AUTH_SUCCESS,
+  RECEIVE_AUTH_FAIL,
+  SERVER_CONNECTION_ERROR,
+  SEND_REG_REQUEST,
+  RECEIVE_REG_SUCCESS,
+  RECEIVE_REG_FAIL,
+  CLEAR_LOGIN_REG_MESSAGES,
+  SEND_LOGOUT_REQUEST,
+  RECEIVE_LOGOUT_SUCCESS,
+  RECEIVE_LOGOUT_FAIL,
+  GET_USERS_REQUEST,
+  RECEIVE_USERS_SUCCESS,
+  RECEIVE_USERS_FAIL,
+  ADD_USER_REQUEST,
+  RECEIVE_ADD_USER_SUCCESS,
+  RECEIVE_ADD_USER_FAIL,
+  CLEAR_ADD_MESSAGES,
+  EDIT_USER_REQUEST,
+  RECEIVE_EDIT_USER_SUCCESS,
+  RECEIVE_EDIT_USER_FAIL,
+  DELETE_USER_REQUEST,
+  RECEIVE_DELETE_USER_SUCCESS,
+  RECEIVE_DELETE_USER_FAIL
+} from '../constants/ActionTypes';
+import {PATH_REST_USERS, TOKEN_NAME_LOCAL_STORAGE, PATH_REST_AUTHENTICATE, PATH_REST_REGISTER} from '../constants/App';
 
 export const sendAuthRequest = (email, password) => (dispatch) => {
 
   dispatch({type: SEND_AUTH_REQUEST});
 
-  axios.post('http://localhost:8080/api/authenticate', {
+  axios.post(PATH_REST_AUTHENTICATE, {
     email: email,
     password: password
-  })
-  .then((response) => {
-    if(response.data.success){
+  }).then((response) => {
+    if (response.data.success) {
       dispatch({type: RECEIVE_AUTH_SUCCESS, token: response.data.token, loginName: response.data.email, status: response.data.status})
-    }else{
+    } else {
       dispatch({type: RECEIVE_AUTH_FAIL, msg: response.data.msg});
     }
-  })
-  .catch((error) => {
+  }).catch((error) => {
     console.log(SERVER_CONNECTION_ERROR);
   });
 
@@ -27,16 +50,17 @@ export const getUsers = () => (dispatch) => {
 
   dispatch({type: GET_USERS_REQUEST});
 
-  axios.get(PATH_REST_USERS,{
-    headers: {'x-access-token': localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE)}
-  })
-  .then((response) => {
-    if(response.data.success){
+  axios.get(PATH_REST_USERS, {
+    headers: {
+      'x-access-token': localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE)
+    }
+  }).then((response) => {
+    if (response.data.success) {
       dispatch({type: RECEIVE_USERS_SUCCESS, users: response.data.msg});
-    }else
+    } else
       dispatch({type: RECEIVE_USERS_FAIL, msg: response.data.error});
-  })
-  .catch((error) => {
+    }
+  ).catch((error) => {
     console.log(error);
   });
 
@@ -46,18 +70,19 @@ export const addUser = (login, password, isAdmin) => (dispatch) => {
 
   dispatch({type: ADD_USER_REQUEST});
 
-  axios.post('http://localhost:8080/api/register',{
+  axios.post(PATH_REST_REGISTER, {
     email: login,
     password: password,
-    status: isAdmin ? 'admin' : 'user'
-  })
-  .then((response) => {
-    if(response.data.success){
+    status: isAdmin
+      ? 'admin'
+      : 'user'
+  }).then((response) => {
+    if (response.data.success) {
       dispatch({type: RECEIVE_ADD_USER_SUCCESS, msg: response.data.msg});
-    }else
+    } else
       dispatch({type: RECEIVE_ADD_USER_FAIL, msg: response.data.msg});
-  })
-  .catch((error) => {
+    }
+  ).catch((error) => {
     console.log(error);
   });
 
@@ -69,21 +94,24 @@ export const editUser = (idUser, login, password, isAdmin) => (dispatch) => {
 
   axios({
     method: 'put',
-    url: 'http://localhost:8080/api/users/' + idUser,
+    url: PATH_REST_USERS + idUser,
     data: {
       email: login,
       password: password,
-      status: isAdmin ? 'admin' : 'user'
+      status: isAdmin
+        ? 'admin'
+        : 'user'
     },
-    headers: {'x-access-token': localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE)}
-  })
-  .then((response) => {
-    if(response.data.success){
+    headers: {
+      'x-access-token': localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE)
+    }
+  }).then((response) => {
+    if (response.data.success) {
       dispatch({type: RECEIVE_EDIT_USER_SUCCESS, msg: response.data.msg});
-    }else
+    } else
       dispatch({type: RECEIVE_EDIT_USER_FAIL, msg: response.data.msg});
-  })
-  .catch((error) => {
+    }
+  ).catch((error) => {
     console.log(error);
   });
 
@@ -95,16 +123,17 @@ export const deleteUser = (idUser) => (dispatch) => {
 
   axios({
     method: 'delete',
-    url: 'http://localhost:8080/api/users/' + idUser,
-    headers: {'x-access-token': localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE)}
-  })
-  .then((response) => {
-    if(response.data.success){
+    url: PATH_REST_USERS + idUser,
+    headers: {
+      'x-access-token': localStorage.getItem(TOKEN_NAME_LOCAL_STORAGE)
+    }
+  }).then((response) => {
+    if (response.data.success) {
       dispatch({type: RECEIVE_DELETE_USER_SUCCESS, msg: response.data.msg});
-    }else
+    } else
       dispatch({type: RECEIVE_DELETE_USER_FAIL, msg: response.data.msg});
-  })
-  .catch((error) => {
+    }
+  ).catch((error) => {
     console.log(error);
   });
 
@@ -114,18 +143,16 @@ export const sendRegRequest = (email, password) => (dispatch) => {
 
   dispatch({type: SEND_REG_REQUEST});
 
-  axios.post('http://localhost:8080/api/register', {
+  axios.post(PATH_REST_REGISTER, {
     email: email,
     password: password
-  })
-  .then((response) => {
-    if(response.data.success){
+  }).then((response) => {
+    if (response.data.success) {
       dispatch({type: RECEIVE_REG_SUCCESS})
-    }else{
+    } else {
       dispatch({type: RECEIVE_REG_FAIL, msg: response.data.msg});
     }
-  })
-  .catch((error) => {
+  }).catch((error) => {
     console.log(SERVER_CONNECTION_ERROR);
   });
 
@@ -141,5 +168,4 @@ export const clearMessages = () => (dispatch) => {
 
 export const logOut = () => (dispatch) => {
   dispatch({type: SEND_LOGOUT_REQUEST});
-
 }

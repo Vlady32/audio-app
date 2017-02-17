@@ -17,17 +17,18 @@ injectTapEventPlugin();
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={history}>
-      <Redirect from="/" to="recents" />
-      <Route path="/" component={App} >
-        <Route path="recents" component={App} />
-        <Route path="favorites" component={App} />
-        <Route path="popular" component={App} />
-        <Route path="trance" component={App} />
-        <Route path="chillout" component={App} />
+  <Router history={history}>
+    <Redirect from="/" to="recents"/>
+    <Route path="/" component={App}>
+      <Route path="recents" component={App}/>
+      <Route path="favorites" component={App}/>
+      <Route path="popular" component={App}/>
+      <Route path="trance" component={App}/>
+      <Route path="chillout" component={App}/>
+      <Route path="house" component={App}/>
+      <Route path="dubstep" component={App}/>
+      <Route path="deep" component={App}/>
     </Route>
-    <Route path="user/:userId" component={User} />
-    </Router>
-  </Provider>,
-  document.getElementById('root')
-)
+    <Route path="user/:userId" component={User}/>
+  </Router>
+</Provider>, document.getElementById('root'))

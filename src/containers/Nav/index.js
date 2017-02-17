@@ -53,52 +53,59 @@ const Nav = ({pathname}) => {
           <div className="col-md-12">
             <MuiThemeProvider>
               <Link to="/recents">
-                <RaisedButton
-                  style={pathname == '/recents' ? navStyles.navButtonActiveTab : navStyles.navButton}
-                  label="Recents"
-                  labelPosition="after"
-                  icon={<ResentsIcon />}
-                />
+                <RaisedButton style={pathname == '/recents'
+                  ? navStyles.navButtonActiveTab
+                  : navStyles.navButton} label="Recents" labelPosition="after" icon={< ResentsIcon />}/>
               </Link>
             </MuiThemeProvider>
             <MuiThemeProvider>
               <Link to="/favorites">
-                <RaisedButton
-                  style={pathname == '/favorites' ? navStyles.navButtonActiveTab : navStyles.navButton}
-                  label="Favorites"
-                  labelPosition="after"
-                  icon={<FavouriteIcon />}
-                />
+                <RaisedButton style={pathname == '/favorites'
+                  ? navStyles.navButtonActiveTab
+                  : navStyles.navButton} label="Favorites" labelPosition="after" icon={< FavouriteIcon />}/>
               </Link>
             </MuiThemeProvider>
             <MuiThemeProvider>
               <Link to="/popular">
-                <RaisedButton
-                  style={pathname == '/popular' ? navStyles.navButtonActiveTab : navStyles.navButton}
-                  label="Listenings"
-                  labelPosition="after"
-                  icon={<HeadsetIcon />}
-                />
+                <RaisedButton style={pathname == '/popular'
+                  ? navStyles.navButtonActiveTab
+                  : navStyles.navButton} label="Listenings" labelPosition="after" icon={< HeadsetIcon />}/>
               </Link>
             </MuiThemeProvider>
             <MuiThemeProvider>
               <Link to="/trance">
-                <RaisedButton label="Trance" style={pathname == '/trance' ? navStyles.borderLeftStyleActiveTab : navStyles.borderLeftStyle} />
+                <RaisedButton label="Trance" style={pathname == '/trance'
+                  ? navStyles.borderLeftStyleActiveTab
+                  : navStyles.borderLeftStyle}/>
               </Link>
             </MuiThemeProvider>
             <MuiThemeProvider>
               <Link to="/chillout">
-                <RaisedButton label="Chillout" style={pathname == '/chillout' ? navStyles.borderStyleActiveTab : navStyles.borderStyle} />
+                <RaisedButton label="Chillout" style={pathname == '/chillout'
+                  ? navStyles.borderStyleActiveTab
+                  : navStyles.borderStyle}/>
               </Link>
             </MuiThemeProvider>
             <MuiThemeProvider>
-              <RaisedButton label="House" style={pathname == '/house' ? navStyles.borderStyleActiveTab : navStyles.borderStyle} />
+              <Link to="/house">
+                <RaisedButton label="House" style={pathname == '/house'
+                  ? navStyles.borderStyleActiveTab
+                  : navStyles.borderStyle}/>
+              </Link>
             </MuiThemeProvider>
             <MuiThemeProvider>
-              <RaisedButton label="Dubstep" style={pathname == '/dubstep' ? navStyles.borderStyleActiveTab : navStyles.borderStyle} />
+              <Link to="/dubstep">
+                <RaisedButton label="Dubstep" style={pathname == '/dubstep'
+                  ? navStyles.borderStyleActiveTab
+                  : navStyles.borderStyle}/>
+              </Link>
             </MuiThemeProvider>
             <MuiThemeProvider>
-              <RaisedButton label="Deep" style={pathname == '/deep' ? navStyles.borderStyleActiveTab : navStyles.borderStyle} />
+              <Link to="/deep">
+                <RaisedButton label="Deep" style={pathname == '/deep'
+                  ? navStyles.borderStyleActiveTab
+                  : navStyles.borderStyle}/>
+            </Link>
             </MuiThemeProvider>
           </div>
         </div>
@@ -109,14 +116,11 @@ const Nav = ({pathname}) => {
 };
 
 const mapStateToProps = () => {
-  return {
-  }
+  return {}
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-
-  }
+  return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Nav);

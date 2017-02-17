@@ -11,27 +11,32 @@ import "./WorkspaceTracks.less";
 
 var classNames = require('classnames');
 
-class WorkspaceTracks extends Component{
+class WorkspaceTracks extends Component {
 
-  componentWillMount(){
+  componentWillMount() {
     this.props.songsActions.getTracks(this.props.pathname);
   }
 
-  render(){
+  render() {
     return (
       <div className='WorkspaceTracks'>
         <div className='container'>
-          {this.props.tracks.fetchingTracks ? (
-            <MuiThemeProvider>
-              <CircularProgress style={{left: '540px', top: '20px'}} size={60} thickness={5} />
-            </MuiThemeProvider>
-          ) : (
-            <div>
-              {this.props.tracks.arraySongs.map((track, index) =>
-                <Track key={Date.now() + index} isLiked={track.idsUsersLike.indexOf(this.props.auth.loginName) == -1 ? false : true } idTrack={track._id} trackName={track.name} urlImg={track.urlImg} urlTrack={track.urlTrack} trackIndex={index} trackIndexCategory={this.props.tracks.arrayCategories.map((el) => el._id).indexOf(track.category)} />
-              )}
-            </div>
-          )}
+          {this.props.tracks.fetchingTracks
+            ? (
+              <MuiThemeProvider>
+                <CircularProgress style={{
+                  left: '540px',
+                  top: '20px'
+                }} size={60} thickness={5}/>
+              </MuiThemeProvider>
+            )
+            : (
+              <div>
+                {this.props.tracks.arraySongs.map((track, index) => <Track key={Date.now() + index} isLiked={track.idsUsersLike.indexOf(this.props.auth.loginName) == -1
+                  ? false
+                  : true} idTrack={track._id} trackName={track.name} urlImg={track.urlImg} urlTrack={track.urlTrack} trackIndex={index} trackIndexCategory={this.props.tracks.arrayCategories.map((el) => el._id).indexOf(track.category)}/>)}
+              </div>
+            )}
         </div>
       </div>
     );
@@ -40,10 +45,7 @@ class WorkspaceTracks extends Component{
 };
 
 const mapStateToProps = (state) => {
-  return {
-    auth: state.auth,
-    tracks: state.tracks
-  }
+  return {auth: state.auth, tracks: state.tracks}
 }
 
 const mapDispatchToProps = (dispatch) => {

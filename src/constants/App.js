@@ -10,3 +10,6 @@ export const SUCCESS_AUTHENTICATION = 'You have been successfully authenticated'
 export const PATH_REST_SONGS = 'http://localhost:8080/api/tracks/';
 export const PATH_REST_COMMENTS = 'http://localhost:8080/api/comments/';
 export const PATH_REST_USERS = 'http://localhost:8080/api/users/';
+export const PATH_REST_AUTHENTICATE = 'http://localhost:8080/api/authenticate/';
+export const PATH_REST_REGISTER = 'http://localhost:8080/api/register/';
+export const PATH_REST_CHANGE_TRACK = 'http://localhost:8080/api/changeTrack';

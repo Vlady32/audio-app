@@ -13,32 +13,34 @@ import './App.less';
 
 var classNames = require('classnames');
 
-class App extends Component{
+class App extends Component {
 
-  componentWillReceiveProps(nextProps){
-    if(this.props.location.pathname !== nextProps.location.pathname){
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location.pathname !== nextProps.location.pathname) {
       this.props.songsActions.getTracks(nextProps.location.pathname);
-      if(this.props.player.isPlayingNow)
+      if (this.props.player.isPlayingNow)
         this.props.playerActions.closePlayer();
+      }
     }
-  }
 
-  render(){
+  render() {
     var appClasses = classNames('container', 'App');
 
     return (
       <div className='App'>
         <div className="wrapper">
           <div className="content">
-            <Header />
+            <Header/>
             <Nav pathname={this.props.ownProps.location.pathname}/>
             <WorkspaceTracks pathname={this.props.ownProps.location.pathname}/>
           </div>
-          {this.props.player.isShownPlayer ? (
-            <div className="footer">
-              <Player />
-            </div>
-          ) : ''}
+          {this.props.player.isShownPlayer
+            ? (
+              <div className="footer">
+                <Player/>
+              </div>
+            )
+            : ''}
         </div>
       </div>
     )
@@ -47,12 +49,7 @@ class App extends Component{
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-    player: state.player,
-    tracks: state.tracks.songs,
-    fetching: state.tracks.fetching,
-    ownProps
-  }
+  return {player: state.player, tracks: state.tracks.songs, fetching: state.tracks.fetching, ownProps}
 }
 
 const mapDispatchToProps = (dispatch) => {

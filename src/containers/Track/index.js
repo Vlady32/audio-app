@@ -17,8 +17,14 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-
+import {
+  Card,
+  CardActions,
+  CardHeader,
+  CardMedia,
+  CardTitle,
+  CardText
+} from 'material-ui/Card';
 
 var classNames = require('classnames');
 
@@ -43,13 +49,13 @@ class Track extends Component {
 
   handleClickSong = () => {
 
-    if(this.props.player.isPlayingNow && this.state.isPlayingCurrentTrackNow){
+    if (this.props.player.isPlayingNow && this.state.isPlayingCurrentTrackNow) {
       this.setState({isPlayingCurrentTrackNow: false});
       this.props.playerActions.pauseSong();
       return;
     }
 
-    if(this.props.player.isShownPlayer && this.state.isClicked){
+    if (this.props.player.isShownPlayer && this.state.isClicked) {
       this.setState({isPlayingCurrentTrackNow: true});
       this.props.playerActions.playSong();
       return;
@@ -61,11 +67,13 @@ class Track extends Component {
 
   handleClickLike = () => {
     this.props.songsActions.likeTrack(this.props.idTrack, this.props.auth.loginName);
-    this.setState({isLiked: !this.state.isLiked});
+    this.setState({
+      isLiked: !this.state.isLiked
+    });
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.player.trackIndex !== this.props.trackIndex){
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.player.trackIndex !== this.props.trackIndex) {
       this.setState({isPlayingCurrentTrackNow: false, isClicked: false});
       return;
     }
@@ -82,47 +90,54 @@ class Track extends Component {
   }
 
   sendComment = (idDialogTrackIndex) => {
-    if(this.refs.comment.getValue().length > 0){
+    if (this.refs.comment.getValue().length > 0) {
       this.props.songsActions.sendComment(this.props.tracks.arraySongs[idDialogTrackIndex]._id, this.refs.comment.getValue(), this.props.auth.loginName);
     }
   }
 
   render() {
 
-    const dialogTrackActions = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onTouchTap={this.handleDialogTrackClose}
-      />
-    ];
+    const dialogTrackActions = [< FlatButton label = "Cancel" primary = {
+        true
+      }
+      onTouchTap = {
+        this.handleDialogTrackClose
+      } />];
 
     return (
       <div className="songCard">
-        <div className="songImg" style={{backgroundImage: `url(${this.props.urlImg})`}} onMouseEnter={this.handleMouseEnterTrack} onMouseLeave={this.handleMouseLeaveTrack} onClick={this.handleClickSong}>
-          {this.state.isShownBGC && !this.state.isPlayingCurrentTrackNow && !this.state.isClicked ? (
-            <div className="blackBackground">
-              <MuiThemeProvider>
-                <PlayIcon color='#00BCD4' viewBox="0 0 20 20"/>
-              </MuiThemeProvider>
-            </div>
-          ) : ''}
+        <div className="songImg" style={{
+          backgroundImage: `url(${this.props.urlImg})`
+        }} onMouseEnter={this.handleMouseEnterTrack} onMouseLeave={this.handleMouseLeaveTrack} onClick={this.handleClickSong}>
+          {this.state.isShownBGC && !this.state.isPlayingCurrentTrackNow && !this.state.isClicked
+            ? (
+              <div className="blackBackground">
+                <MuiThemeProvider>
+                  <PlayIcon color='#00BCD4' viewBox="0 0 20 20"/>
+                </MuiThemeProvider>
+              </div>
+            )
+            : ''}
 
-          {this.props.player.trackIndex == this.props.trackIndex && this.state.isPlayingCurrentTrackNow ? (
-            <div className="blackBackgroundHover">
-              <MuiThemeProvider>
-                <PauseIcon color='#00BCD4' viewBox="0 0 20 20"/>
-              </MuiThemeProvider>
-            </div>
-          ) : ''}
+          {this.props.player.trackIndex == this.props.trackIndex && this.state.isPlayingCurrentTrackNow
+            ? (
+              <div className="blackBackgroundHover">
+                <MuiThemeProvider>
+                  <PauseIcon color='#00BCD4' viewBox="0 0 20 20"/>
+                </MuiThemeProvider>
+              </div>
+            )
+            : ''}
 
-          {this.props.player.trackIndex == this.props.trackIndex && !this.state.isPlayingCurrentTrackNow && this.state.isClicked ? (
-            <div className="blackBackgroundHover">
-              <MuiThemeProvider>
-                <PlayIcon color='#00BCD4' viewBox="0 0 20 20"/>
-              </MuiThemeProvider>
-            </div>
-          ) : ''}
+          {this.props.player.trackIndex == this.props.trackIndex && !this.state.isPlayingCurrentTrackNow && this.state.isClicked
+            ? (
+              <div className="blackBackgroundHover">
+                <MuiThemeProvider>
+                  <PlayIcon color='#00BCD4' viewBox="0 0 20 20"/>
+                </MuiThemeProvider>
+              </div>
+            )
+            : ''}
 
         </div>
         <div className="songBottomLine">
@@ -131,75 +146,98 @@ class Track extends Component {
             <p className="songTitle" onClick={() => this.handleDialogTrackOpen(this.props.trackIndex)} title={this.props.trackName}>{this.props.trackName}</p>
             <p className="songCtg">{this.props.tracks.arrayCategories[this.props.trackIndexCategory].name}</p>
           </div>
-          {this.props.auth.isAuthenticated ? (
-            <div className="songLike">
-              <MuiThemeProvider>
-                <FavouriteIcon onClick={this.handleClickLike} color={this.state.isLiked ? '#ff0000' : '#CCC'} viewBox="0 0 40 40"/>
-              </MuiThemeProvider>
-            </div>
-          ) : ''}
+          {this.props.auth.isAuthenticated
+            ? (
+              <div className="songLike">
+                <MuiThemeProvider>
+                  <FavouriteIcon onClick={this.handleClickLike} color={this.state.isLiked
+                    ? '#ff0000'
+                    : '#CCC'} viewBox="0 0 40 40"/>
+                </MuiThemeProvider>
+              </div>
+            )
+            : ''}
         </div>
         <MuiThemeProvider>
-          <Dialog
-            className="dialogTrack"
-            actions={dialogTrackActions}
-            modal={false}
-            open={this.props.tracks.isOpenedDialogTrack}
-            onRequestClose={this.handleDialogTrackClose}
-            autoScrollBodyContent={true}
-          >
+          <Dialog className="dialogTrack" actions={dialogTrackActions} modal={false} open={this.props.tracks.isOpenedDialogTrack} onRequestClose={this.handleDialogTrackClose} autoScrollBodyContent={true}>
             <div className="titleSection">
-              <div className="trackLogo"><img src={this.props.tracks.idDialogTrack !== -1 ? this.props.tracks.arraySongs[this.props.tracks.idDialogTrack].urlImg : ''} alt="logo"/></div>
+              <div className="trackLogo"><img src={this.props.tracks.idDialogTrack !== -1
+        ? this.props.tracks.arraySongs[this.props.tracks.idDialogTrack].urlImg
+        : ''} alt="logo"/></div>
               <div className="trackInfo">
-                <div className="trackName" title={this.props.tracks.idDialogTrack !== -1 ? this.props.tracks.arraySongs[this.props.tracks.idDialogTrack].name : ''}>{this.props.tracks.idDialogTrack !== -1 ? this.props.tracks.arraySongs[this.props.tracks.idDialogTrack].name : ''}</div>
-                <div className="trackCategory">{this.props.tracks.idDialogTrack !== -1 ? this.props.tracks.arrayCategories[this.props.trackIndexCategory].name : ''}</div>
+                <div className="trackName" title={this.props.tracks.idDialogTrack !== -1
+                  ? this.props.tracks.arraySongs[this.props.tracks.idDialogTrack].name
+                  : ''}>{this.props.tracks.idDialogTrack !== -1
+                    ? this.props.tracks.arraySongs[this.props.tracks.idDialogTrack].name
+                    : ''}</div>
+                <div className="trackCategory">{this.props.tracks.idDialogTrack !== -1
+                    ? this.props.tracks.arrayCategories[this.props.trackIndexCategory].name
+                    : ''}</div>
                 <div className="counts">
                   <div className="countLikes">
                     <MuiThemeProvider>
-                      <FavouriteIcon color='#CCC' style={{marginRight: '15px'}} viewBox="0 0 35 35"/>
+                      <FavouriteIcon color='#CCC' style={{
+                        marginRight: '15px'
+                      }} viewBox="0 0 35 35"/>
                     </MuiThemeProvider>
-                    <div className="countLikesText">{this.props.tracks.idDialogTrack !== -1 ? this.props.tracks.arraySongs[this.props.tracks.idDialogTrack].countLikes : ''}</div>
+                    <div className="countLikesText">{this.props.tracks.idDialogTrack !== -1
+                        ? this.props.tracks.arraySongs[this.props.tracks.idDialogTrack].countLikes
+                        : ''}</div>
                   </div>
                   <div className="countListenings">
                     <MuiThemeProvider>
-                      <HeadsetIcon color='#CCC' style={{marginRight: '15px'}} viewBox="0 0 35 35"/>
+                      <HeadsetIcon color='#CCC' style={{
+                        marginRight: '15px'
+                      }} viewBox="0 0 35 35"/>
                     </MuiThemeProvider>
-                    <div className="countListeningsText">{this.props.tracks.idDialogTrack !== -1 ? this.props.tracks.arraySongs[this.props.tracks.idDialogTrack].countViews : ''}</div>
+                    <div className="countListeningsText">{this.props.tracks.idDialogTrack !== -1
+                        ? this.props.tracks.arraySongs[this.props.tracks.idDialogTrack].countViews
+                        : ''}</div>
                   </div>
                 </div>
               </div>
             </div>
-            {this.props.auth.isAuthenticated ? (
-              <div className="sectionTypingMessage">
+            {this.props.auth.isAuthenticated
+              ? (
+                <div className="sectionTypingMessage">
+                  <MuiThemeProvider>
+                    <TextField ref="comment" multiLine={true} rows={1} rowsMax={3} hintText="Type message" style={{
+                      width: '93%',
+                      float: 'left'
+                    }}/>
+                  </MuiThemeProvider>
+                  <MuiThemeProvider>
+                    <SendIcon onClick={() => this.sendComment(this.props.tracks.idDialogTrack)} color='#CCC' style={{
+                      marginLeft: '10px',
+                      width: '5%',
+                      float: 'left',
+                      marginTop: '20px',
+                      cursor: 'pointer'
+                    }}/>
+                  </MuiThemeProvider>
+                </div>
+              )
+              : ''}
+            {this.props.tracks.fetchingComments
+              ? (
                 <MuiThemeProvider>
-                  <TextField ref="comment" multiLine={true} rows={1} rowsMax={3} hintText="Type message" style={{width: '93%', float: 'left'}}/>
+                  <CircularProgress style={{
+                    left: '300px',
+                    top: '20px'
+                  }} size={60} thickness={5}/>
                 </MuiThemeProvider>
-                <MuiThemeProvider>
-                  <SendIcon onClick={() => this.sendComment(this.props.tracks.idDialogTrack)} color='#CCC' style={{marginLeft: '10px', width: '5%', float: 'left', marginTop: '20px', cursor: 'pointer'}}/>
-                </MuiThemeProvider>
-              </div>
-            ) : ''}
-            {this.props.tracks.fetchingComments ? (
-              <MuiThemeProvider>
-                <CircularProgress style={{left: '300px', top: '20px'}} size={60} thickness={5} />
-              </MuiThemeProvider>
-            ) : (
-              <div className="sectionComments">
-                  {this.props.tracks.arrayComments.map((comment, index) =>
-                    <MuiThemeProvider key={Date.now() + index}>
-                      <Card>
-                        <CardHeader
-                          title={comment.login}
-                          subtitle={comment.creationDate}
-                          avatar="img/user.ico"
-                        />
-                        <CardText>{comment.text}</CardText>
-                      </Card>
-                    </MuiThemeProvider>
-                  )}
-              </div>
-            )}
-        </Dialog>
+              )
+              : (
+                <div className="sectionComments">
+                  {this.props.tracks.arrayComments.map((comment, index) => <MuiThemeProvider key={Date.now() + index}>
+                    <Card>
+                      <CardHeader title={comment.login} subtitle={comment.creationDate} avatar="img/user.ico"/>
+                      <CardText>{comment.text}</CardText>
+                    </Card>
+                  </MuiThemeProvider>)}
+                </div>
+              )}
+          </Dialog>
         </MuiThemeProvider>
       </div>
     );
@@ -208,17 +246,13 @@ class Track extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {
-    auth: state.auth,
-    tracks: state.tracks,
-    player: state.player
-  }
+  return {auth: state.auth, tracks: state.tracks, player: state.player}
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     playerActions: bindActionCreators(playerActions, dispatch),
-    songsActions: bindActionCreators(songsActions, dispatch),
+    songsActions: bindActionCreators(songsActions, dispatch)
   }
 }
 
